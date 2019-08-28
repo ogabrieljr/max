@@ -6,9 +6,9 @@ export default class App extends Component {
 		super(props);
 		this.state = {
 			persons: [
-				{ name: "NAME", age: 23 },
-				{ name: "NAME2", age: 33 },
-				{ name: "NAME3", age: 43 }
+				{ id: "1", name: "NAME", age: 23 },
+				{ id: "2", name: "NAME2", age: 33 },
+				{ id: "3", name: "NAME3", age: 43 }
 			],
 			showPersons: false
 		};
@@ -17,28 +17,48 @@ export default class App extends Component {
 		const show = this.state.showPersons;
 		this.setState({ showPersons: !show });
 	};
-	nameChange = e => {
+
+	nameChange = (e, id) => {
+		const personIndex = this.state.persons.findIndex(person => {
+			return person.id === id;
+		});
+		const person = {
+			...this.state.persons[personIndex]
+		};
+		// const person = Object.assign({}, this.state.persons[personIndex])
+		person.name = e.target.value;
+		const persons = [...this.state.persons];
+		persons[personIndex] = person;
 		this.setState({
-			persons: [
-				{ name: "NAME", age: 23 },
-				{ name: "NAME2", age: 33 },
-				{ name: e.target.value, age: 43 }
-			]
+			persons: persons
 		});
 	};
+
+
+	deletePerson = index => {
+		// const persons = this.state.persons.slice()
+		const persons = [...this.state.persons];
+		persons.splice(index, 1);
+		this.setState({ persons });
+	};
+
 
 	render() {
 		let persons = null;
 		if (this.state.showPersons) {
 			persons = (
 				<div>
-					<Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
-					<Person name={this.state.persons[1].name} age={this.state.persons[1].age} />
-					<Person
-						nameChange={this.nameChange}
-						name={this.state.persons[2].name}
-						age={this.state.persons[2].age}
-					/>
+					{this.state.persons.map((person, index) => {
+						return (
+							<Person
+								key={person.id}
+								deletePerson={this.deletePerson}
+								name={person.name}
+								age={person.age}
+								nameChange={e => this.nameChange(e, person.id)}
+							/>
+						);
+					})}
 				</div>
 			);
 		}
