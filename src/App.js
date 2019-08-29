@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Person from "./Person";
+import Char from "./Char";
+import Validation from "./Validation";
 
 export default class App extends Component {
 	constructor(props) {
@@ -10,7 +12,8 @@ export default class App extends Component {
 				{ id: "b", name: "NAME2", age: 33 },
 				{ id: "c", name: "NAME3", age: 43 }
 			],
-			showPersons: false
+			showPersons: false,
+			username: ""
 		};
 	}
 	nameChange = (event, id) => {
@@ -26,7 +29,19 @@ export default class App extends Component {
 		this.setState({ persons });
 	};
 	personsToggle = () => this.setState({ showPersons: !this.state.showPersons });
+	usernameChange = e => this.setState({ username: e.target.value });
+	deleteCharacter = index => {
+		const text = this.state.username.split("");
+		text.splice(index, 1);
+		const updatedText = text.join("");
+		this.setState({ username: updatedText });
+	};
 	render() {
+		const charList = this.state.username
+			.split("")
+			.map((character, index) => (
+				<Char deleteCharacter={this.deleteCharacter} key={index} character={character} />
+			));
 		let persons = null;
 		if (this.state.showPersons) {
 			persons = this.state.persons.map(person => (
@@ -43,6 +58,12 @@ export default class App extends Component {
 			<div>
 				<button onClick={this.personsToggle}>btn</button>
 				{persons}
+				<div>
+					<input onChange={this.usernameChange} value={this.state.username} />
+					<p>{this.state.username}</p>
+					<Validation usernameLength={this.state.username.length} />
+					{charList}
+				</div>
 			</div>
 		);
 	}
