@@ -1,0 +1,17 @@
+.red {
+  color:red
+}
+
+.bold{
+  font-weight: bold
+}
+
+.blue{
+  color:blue
+}
+
+/* @media (min-width:500px) {
+  .Person {
+    width: 450px
+  }
+} */
