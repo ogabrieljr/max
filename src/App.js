@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import Person from "./Person";
 import Char from "./Char";
 import Validation from "./Validation";
+import "./App.css"
+import Radium from "radium"
 
-export default class App extends Component {
+ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -37,6 +39,27 @@ export default class App extends Component {
 		this.setState({ username: updatedText });
 	};
 	render() {
+
+		const classes = []
+
+		if(this.state.username.length < 5) {
+			classes.push("red")
+		} else if(this.state.username.length >= 5) {
+			classes.push("blue bold")
+		}
+
+		const style = {
+			backgroundColor: "green",
+			color:"white",
+			border:"1px solid blue",
+			padding:"5px",
+			cursor:"pointer",
+			":hover":{
+				backgroundColor:"lightgreen",
+				color:"black"
+			}
+		}
+
 		const charList = this.state.username
 			.split("")
 			.map((character, index) => (
@@ -53,14 +76,19 @@ export default class App extends Component {
 					age={person.age}
 				/>
 			));
+			style.backgroundColor = "red"
+			style[":hover"] = {
+				backgroundColor:"salmon",
+				color:"black"
+			}
 		}
 		return (
 			<div>
-				<button onClick={this.personsToggle}>btn</button>
+				<button style={style} onClick={this.personsToggle}>button</button>
 				{persons}
 				<div>
 					<input onChange={this.usernameChange} value={this.state.username} />
-					<p>{this.state.username}</p>
+					<p className={classes}>{this.state.username}</p>
 					<Validation usernameLength={this.state.username.length} />
 					{charList}
 				</div>
@@ -68,3 +96,5 @@ export default class App extends Component {
 		);
 	}
 }
+
+export default Radium(App)
