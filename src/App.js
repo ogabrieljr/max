@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Person from "./Person";
 import Char from "./Char";
 import Validation from "./Validation";
-import "./App.css"
-import Radium from "radium"
+import "./App.css";
+import Radium from "radium";
 
- class App extends Component {
+class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -39,27 +39,25 @@ import Radium from "radium"
 		this.setState({ username: updatedText });
 	};
 	render() {
+		const classes = [];
 
-		const classes = []
-
-		if(this.state.username.length < 5) {
-			classes.push("red")
-		} else if(this.state.username.length >= 5) {
-			classes.push("blue bold")
+		if (this.state.username.length < 5) {
+			classes.push("red");
+		} else if (this.state.username.length >= 5) {
+			classes.push("blue bold");
 		}
 
 		const style = {
 			backgroundColor: "green",
-			color:"white",
-			border:"1px solid blue",
-			padding:"5px",
-			cursor:"pointer",
-			":hover":{
-				backgroundColor:"lightgreen",
-				color:"black"
+			color: "white",
+			border: "1px solid blue",
+			padding: "5px",
+			cursor: "pointer",
+			":hover": {
+				backgroundColor: "lightgreen",
+				color: "black"
 			}
-		}
-
+		};
 		const charList = this.state.username
 			.split("")
 			.map((character, index) => (
@@ -76,15 +74,17 @@ import Radium from "radium"
 					age={person.age}
 				/>
 			));
-			style.backgroundColor = "red"
+			style.backgroundColor = "red";
 			style[":hover"] = {
-				backgroundColor:"salmon",
-				color:"black"
-			}
+				backgroundColor: "salmon",
+				color: "black"
+			};
 		}
 		return (
 			<div>
-				<button style={style} onClick={this.personsToggle}>button</button>
+				<button style={style} onClick={this.personsToggle}>
+					button
+				</button>
 				{persons}
 				<div>
 					<input onChange={this.usernameChange} value={this.state.username} />
@@ -97,4 +97,4 @@ import Radium from "radium"
 	}
 }
 
-export default Radium(App)
+export default Radium(App);
