@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import Person from "./Person";
-import Char from "./Char";
-import Validation from "./Validation";
 import "./App.css";
 import Radium from "radium";
+import Persons from "../Components/Persons/Persons";
+import Cockpit from "../Components/Cockpit/Cockpit";
 
 class App extends Component {
 	constructor(props) {
@@ -39,14 +38,6 @@ class App extends Component {
 		this.setState({ username: updatedText });
 	};
 	render() {
-		const classes = [];
-
-		if (this.state.username.length < 5) {
-			classes.push("red");
-		} else if (this.state.username.length >= 5) {
-			classes.push("blue bold");
-		}
-
 		const style = {
 			backgroundColor: "green",
 			color: "white",
@@ -58,22 +49,15 @@ class App extends Component {
 				color: "black"
 			}
 		};
-		const charList = this.state.username
-			.split("")
-			.map((character, index) => (
-				<Char deleteCharacter={this.deleteCharacter} key={index} character={character} />
-			));
 		let persons = null;
 		if (this.state.showPersons) {
-			persons = this.state.persons.map(person => (
-				<Person
-					deletePerson={() => this.deletePerson(person.id)}
-					nameChange={e => this.nameChange(e, person.id)}
-					key={person.id}
-					name={person.name}
-					age={person.age}
+			persons = (
+				<Persons
+					persons={this.state.persons}
+					deletePerson={this.deletePerson}
+					nameChange={this.nameChange}
 				/>
-			));
+			);
 			style.backgroundColor = "red";
 			style[":hover"] = {
 				backgroundColor: "salmon",
@@ -86,12 +70,11 @@ class App extends Component {
 					button
 				</button>
 				{persons}
-				<div>
-					<input onChange={this.usernameChange} value={this.state.username} />
-					<p className={classes}>{this.state.username}</p>
-					<Validation usernameLength={this.state.username.length} />
-					{charList}
-				</div>
+				<Cockpit
+					deleteCharacter={this.deleteCharacter}
+					username={this.state.username}
+					usernameChange={this.usernameChange}
+				/>
 			</div>
 		);
 	}
